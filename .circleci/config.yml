@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Build docker image
           command: |
-            docker build -t ducnx1506/capstoneproject .
+            docker build -t capstoneproject .
 
   push-to-docker-hub:
     docker:
@@ -67,7 +67,8 @@ jobs:
           name: Build docker image
           command: |
             docker login -u ${username} -p ${password}
-            docker push ducnx1506/capstoneproject
+            docker tag capstoneproject ducnx1506/capstoneproject:tag
+            docker push ducnx1506/capstoneproject:tag
 
   add-kubectl:
     docker:
