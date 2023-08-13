@@ -1,0 +1,142 @@
+version: 2.1
+
+jobs:
+  installing-dependencies:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: installing dependencies via Makefile
+          command: |
+            make install
+
+  make-lint:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: Linting check the code
+          command: |
+            make lint
+
+  build-image:
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - setup_remote_docker:
+            version: 19.03.13
+      - run:
+          name: Build docker image
+          command: |
+            docker build -t capstoneproject
+
+  push-to-docker-hub:
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - setup_remote_docker:
+            version: 19.03.13
+      - run:
+          name: Build docker image
+          command: |
+            docker login -u ${username} -p ${password}
+            docker push capstoneproject
+
+  add-kubectl:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: Add kubectl
+          command: |
+            aws eks --region us-east-1 update-kubeconfig --name clustercapstone
+
+  set-kubectl:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: Add kubectl
+          command: |
+            kubectl config use-context arn:aws:eks:us-east-1:802725115046:cluster/clustercapstone
+
+  deploy-blue:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: Add kubectl
+          command: |
+            kubectl apply -f ./deployment/blue-controller.json
+
+  deploy-green:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: Add kubectl
+          command: |
+            kubectl apply -f ./deployment/green-controller.json
+
+  create-blue-service:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: Add kubectl
+          command: |
+            kubectl apply -f ./deployment/blue-service.json
+
+  user-accept:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: Add kubectl
+          command: |
+            echo "Do you want to redirect traffic to green?"
+
+  create-green-service:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - run:
+          name: Add kubectl
+          command: |
+            kubectl apply -f ./deployment/green-service.json
+
+workflows:
+  default:
+    jobs:
+      - installing-dependencies
+      - make-lint:
+          requires: [installing-dependencies]
+      - build-image:
+          requires: [make-lint]
+      - push-to-docker-hub:
+          requires: [build-image]
+      - add-kubectl:
+          requires: [push-to-docker-hub]
+      - set-kubectl:
+          requires: [add-kubectl]
+      - deploy-blue:
+          requires: [set-kubectl]
+      - deploy-green:
+          requires: [deploy-blue]
+      - create-blue-service:
+          requires: [deploy-green]
+      - user-accept:
+          requires: [create-blue-service]
+      - create-green-service:
+          requires: [user-accept]
