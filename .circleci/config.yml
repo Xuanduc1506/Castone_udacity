@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Build docker image
           command: |
-            docker build -t capstoneproject .
+            docker build -t ducnx1506/capstoneproject .
 
   push-to-docker-hub:
     docker:
