@@ -44,7 +44,7 @@ jobs:
 #            . venv/bin/activate
 #            make lint
 
-  build-image:
+  build-image-and-push-to-docker-hub:
     docker:
       - image: cimg/node:13.8.0
     steps:
@@ -55,21 +55,24 @@ jobs:
           name: Build docker image
           command: |
             docker build --tag=capstoneproject .
-
-  push-to-docker-hub:
-    docker:
-      - image: cimg/node:13.8.0
-    steps:
-      - checkout
-      - setup_remote_docker:
-            version: 19.03.13
-      - run:
-          name: Build docker image
-          command: |
             docker login -u ${username} -p ${password}
-            docker image list
             docker tag capstoneproject ducnx1506/capstoneproject
             docker push ducnx1506/capstoneproject
+
+#  push-to-docker-hub:
+#    docker:
+#      - image: cimg/node:13.8.0
+#    steps:
+#      - checkout
+#      - setup_remote_docker:
+#            version: 19.03.13
+#      - run:
+#          name: Build docker image
+#          command: |
+#            docker login -u ${username} -p ${password}
+#            docker image list
+#            docker tag capstoneproject ducnx1506/capstoneproject
+#            docker push ducnx1506/capstoneproject
 
   add-kubectl:
     docker:
@@ -147,12 +150,12 @@ workflows:
       - installing-dependencies
 #      - make-lint:
 #          requires: [installing-dependencies]
-      - build-image:
+      - build-image-and-push-to-docker-hub:
           requires: [installing-dependencies]
-      - push-to-docker-hub:
-          requires: [build-image]
+#      - push-to-docker-hub:
+#          requires: [build-image]
       - add-kubectl:
-          requires: [push-to-docker-hub]
+          requires: [build-image-and-push-to-docker-hub]
       - set-kubectl:
           requires: [add-kubectl]
       - deploy-blue:
