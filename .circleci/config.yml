@@ -102,7 +102,7 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            aws eks --region us-east-1 update-kubeconfig --name clustercapstone
+            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
 
   set-kubectl:
     docker:
@@ -113,7 +113,7 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            kubectl config use-context arn:aws:eks:us-east-1:802725115046:cluster/clustercapstone
+            kubectl config use-context arn:aws:eks:us-east-1:802725115046:cluster/cluster-capstone-udacity
 
   deploy-blue:
     docker:
