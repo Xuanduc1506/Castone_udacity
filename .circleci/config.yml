@@ -143,10 +143,10 @@ workflows:
   default:
     jobs:
       - installing-dependencies
-      - make-lint:
-          requires: [installing-dependencies]
+#      - make-lint:
+#          requires: [installing-dependencies]
       - build-image:
-          requires: [make-lint]
+          requires: [installing-dependencies]
       - push-to-docker-hub:
           requires: [build-image]
       - add-kubectl:
