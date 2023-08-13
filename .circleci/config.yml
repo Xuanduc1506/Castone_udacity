@@ -67,7 +67,7 @@ jobs:
           name: Build docker image
           command: |
             docker login -u ${username} -p ${password}
-            docker push capstoneproject
+            docker push ducnx1506/capstoneproject
 
   add-kubectl:
     docker:
