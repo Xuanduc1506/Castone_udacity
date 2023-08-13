@@ -1,5 +1,24 @@
 version: 2.1
 
+commands:
+  install-awscli:
+    description: Install awscli
+    steps:
+      - run:
+          name: Install awscli
+          command: |
+            sudo apt update
+            sudo apt-get install awscli
+            sudo apt-get install gettext-base
+  install-kubectl:
+    description: Install kubectl
+    steps:
+      - run:
+          name: Install kubectl
+          command: |
+            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
+            chmod +x ./kubectl          
+
 jobs:
   installing-dependencies:
     docker:
@@ -79,6 +98,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli:
       - run:
           name: Add kubectl
           command: |
@@ -89,6 +109,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
@@ -99,6 +120,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
@@ -109,6 +131,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
@@ -119,6 +142,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
@@ -139,6 +163,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
