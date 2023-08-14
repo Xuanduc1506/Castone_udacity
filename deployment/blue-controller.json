@@ -22,7 +22,7 @@
              "containers":[
                 {
                    "name":"blueapp",
-                   "image":"capstoneproject",
+                   "image":"ducnx1506/capstoneproject",
                    "ports":[
                       {
                          "name":"http-server",
