@@ -105,10 +105,12 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli
       - install-kubectl
       - run:
           name: Add kubectl
           command: |
+            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
             kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
 
 #  set-kubectl:
