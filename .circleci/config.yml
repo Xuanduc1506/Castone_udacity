@@ -112,7 +112,7 @@ jobs:
           command: |
             aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
             kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
-            kubectl apply -f ./deployment/blue-controller.json
+            #kubectl apply -f ./deployment/blue-controller.json
 
 #  set-kubectl:
 #    docker:
