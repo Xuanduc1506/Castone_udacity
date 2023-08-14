@@ -17,7 +17,7 @@ commands:
       - run:
           name: Install kubectl
           command: |
-            curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.1/2023-04-19/bin/darwin/amd64/kubectl
+            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
             #sudo apt-get update && sudo apt-get install -y apt-transport-https
@@ -112,7 +112,7 @@ jobs:
           command: |
             aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
             kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
-            #kubectl apply -f ./deployment/blue-controller.json
+            kubectl apply -f ./deployment/blue-controller.json
 
 #  set-kubectl:
 #    docker:
