@@ -131,6 +131,10 @@ jobs:
       - checkout
       - install-kubectl
       - run:
+          name: Connect to cluster
+          command: |
+            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
+      - run:
           name: Add kubectl
           command: |
             kubectl apply -f ./deployment/blue-controller.json
@@ -142,8 +146,13 @@ jobs:
       - checkout
       - install-kubectl
       - run:
+          name: Connect to cluster
+          command: |
+            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
+      - run:
           name: Add kubectl
           command: |
+            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/green-controller.json
 
   create-blue-service:
@@ -153,8 +162,13 @@ jobs:
       - checkout
       - install-kubectl
       - run:
+          name: Connect to cluster
+          command: |
+            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
+      - run:
           name: Add kubectl
           command: |
+            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/blue-service.json
 
   user-accept:
@@ -174,8 +188,13 @@ jobs:
       - checkout
       - install-kubectl
       - run:
+          name: Connect to cluster
+          command: |
+            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
+      - run:
           name: Add kubectl
           command: |
+            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/green-service.json
 
 workflows:
