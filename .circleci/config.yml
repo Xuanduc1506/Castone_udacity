@@ -119,7 +119,7 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
+            kubectl config use-context cluster-capstone-udacity
 
   deploy-blue:
     docker:
