@@ -105,12 +105,10 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
-      - install-awscli
       - install-kubectl
       - run:
           name: Add kubectl
           command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
             kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
 
 #  set-kubectl:
@@ -129,16 +127,10 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
-      - install-awscli
       - install-kubectl
-      - run:
-          name: Connect to cluster
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
       - run:
           name: Add kubectl
           command: |
-            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/blue-controller.json
 
   deploy-green:
@@ -146,16 +138,10 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
-      - install-awscli
       - install-kubectl
-      - run:
-          name: Connect to cluster
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
       - run:
           name: Add kubectl
           command: |
-            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/green-controller.json
 
   create-blue-service:
@@ -163,16 +149,10 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
-      - install-awscli
       - install-kubectl
-      - run:
-          name: Connect to cluster
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
       - run:
           name: Add kubectl
           command: |
-            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/blue-service.json
 
   user-accept:
@@ -190,16 +170,10 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
-      - install-awscli
       - install-kubectl
-      - run:
-          name: Connect to cluster
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
       - run:
           name: Add kubectl
           command: |
-            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/green-service.json
 
 workflows:
