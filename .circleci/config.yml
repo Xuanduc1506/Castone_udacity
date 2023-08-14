@@ -129,6 +129,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli
       - install-kubectl
       - run:
           name: Connect to cluster
@@ -144,6 +145,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli
       - install-kubectl
       - run:
           name: Connect to cluster
@@ -160,6 +162,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli
       - install-kubectl
       - run:
           name: Connect to cluster
@@ -186,6 +189,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli
       - install-kubectl
       - run:
           name: Connect to cluster
@@ -194,7 +198,6 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/green-service.json
 
 workflows:
