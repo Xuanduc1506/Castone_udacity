@@ -105,21 +105,23 @@ jobs:
     steps:
       - checkout
       - install-awscli
-      - run:
-          name: Add kubectl
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
-
-  set-kubectl:
-    docker:
-      - image: cimg/python:3.7.13
-    steps:
-      - checkout
       - install-kubectl
       - run:
           name: Add kubectl
           command: |
-            kubectl config use-context cluster-capstone-udacity
+            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
+            kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
+
+#  set-kubectl:
+#    docker:
+#      - image: cimg/python:3.7.13
+#    steps:
+#      - checkout
+#      - install-kubectl
+#      - run:
+#          name: Add kubectl
+#          command: |
+#            kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
 
   deploy-blue:
     docker:
@@ -187,10 +189,10 @@ workflows:
 #          requires: [build-image]
       - add-kubectl:
           requires: [build-image-and-push-to-docker-hub]
-      - set-kubectl:
-          requires: [add-kubectl]
+#      - set-kubectl:
+#          requires: [add-kubectl]
       - deploy-blue:
-          requires: [set-kubectl]
+          requires: [add-kubectl]
       - deploy-green:
           requires: [deploy-blue]
       - create-blue-service:
