@@ -133,6 +133,7 @@ jobs:
       - run:
           name: Add kubectl
           command: |
+            sudo sysctl net.bridge.bridge-nf-call-iptables=1
             kubectl apply -f ./deployment/blue-controller.json
 
   deploy-green:
