@@ -129,6 +129,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli
       - install-kubectl
       - run:
           name: Add kubectl
@@ -141,6 +142,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli
       - install-kubectl
       - run:
           name: Add kubectl
@@ -175,6 +177,7 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
+      - install-awscli
       - install-kubectl
       - run:
           name: Add kubectl
