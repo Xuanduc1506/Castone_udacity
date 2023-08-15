@@ -18,7 +18,7 @@ commands:
           name: Install kubectl
           command: |
             curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
-            #chmod +x ./kubectl
+            chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
 
   install-aws-iam:
@@ -104,6 +104,10 @@ jobs:
           name: Add kubectl
           command: |
             aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
+            ls -la
+            ls -la ./deployment
+            kubectl get svc
+            kubectl get pods
             kubectl apply -f ./deployment/blue-controller.json
 
   deploy-green:
