@@ -118,6 +118,7 @@ jobs:
       - checkout
       - install-awscli
       - install-kubectl
+      - install-aws-iam
       - run:
           name: Add kubectl
           command: |
