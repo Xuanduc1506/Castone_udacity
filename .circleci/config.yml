@@ -104,9 +104,7 @@ jobs:
           name: Add kubectl
           command: |
             aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
-            ls -la
-            ls -la ./deployment
-            kubectl get pods
+            kubectl get all --all-namespaces
             kubectl apply -f ./deployment/blue-controller.json
 
   deploy-green:
