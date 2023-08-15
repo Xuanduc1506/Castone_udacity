@@ -20,11 +20,6 @@ commands:
             curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
-            #sudo apt-get update && sudo apt-get install -y apt-transport-https
-            #curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-            #echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-            #sudo apt-get update
-            #sudo apt-get install -y kubectl
 
   install-aws-iam:
     description: Install aws-iam
@@ -69,18 +64,6 @@ jobs:
             . venv/bin/activate
             make lint     
 
-
-#  make-lint:
-#    docker:
-#      - image: cimg/python:3.7.13
-#    steps:
-#      - checkout
-#      - run:
-#          name: Linting check the code
-#          command: |
-#            . venv/bin/activate
-#            make lint
-
   build-image-and-push-to-docker-hub:
     docker:
       - image: cimg/node:13.8.0
@@ -96,21 +79,6 @@ jobs:
             docker tag capstoneproject ducnx1506/capstoneproject
             docker push ducnx1506/capstoneproject
 
-#  push-to-docker-hub:
-#    docker:
-#      - image: cimg/node:13.8.0
-#    steps:
-#      - checkout
-#      - setup_remote_docker:
-#            version: 19.03.13
-#      - run:
-#          name: Build docker image
-#          command: |
-#            docker login -u ${username} -p ${password}
-#            docker image list
-#            docker tag capstoneproject ducnx1506/capstoneproject
-#            docker push ducnx1506/capstoneproject
-
   add-kubectl:
     docker:
       - image: cimg/python:3.7.13
@@ -124,18 +92,6 @@ jobs:
           command: |
             aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
             kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
-            kubectl apply -f ./deployment/blue-controller.json
-
-#  set-kubectl:
-#    docker:
-#      - image: cimg/python:3.7.13
-#    steps:
-#      - checkout
-#      - install-kubectl
-#      - run:
-#          name: Add kubectl
-#          command: |
-#            kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/cluster-capstone-udacity
 
   deploy-blue:
     docker:
@@ -143,8 +99,8 @@ jobs:
     steps:
       - checkout
       - install-awscli
-      - install-kubectl
       - install-aws-iam
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
@@ -157,8 +113,8 @@ jobs:
     steps:
       - checkout
       - install-awscli
-      - install-kubectl
       - install-aws-iam
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
@@ -170,8 +126,9 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
-      - install-kubectl
+      - install-awscli
       - install-aws-iam
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
@@ -194,8 +151,8 @@ jobs:
     steps:
       - checkout
       - install-awscli
-      - install-kubectl
       - install-aws-iam
+      - install-kubectl
       - run:
           name: Add kubectl
           command: |
@@ -206,16 +163,10 @@ workflows:
   default:
     jobs:
       - installing-dependencies
-#      - make-lint:
-#          requires: [installing-dependencies]
       - build-image-and-push-to-docker-hub:
           requires: [installing-dependencies]
-#      - push-to-docker-hub:
-#          requires: [build-image]
       - add-kubectl:
           requires: [build-image-and-push-to-docker-hub]
-#      - set-kubectl:
-#          requires: [add-kubectl]
       - deploy-blue:
           requires: [add-kubectl]
       - deploy-green:
