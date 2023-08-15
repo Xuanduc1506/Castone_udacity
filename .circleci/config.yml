@@ -107,6 +107,7 @@ jobs:
             kubectl get all --all-namespaces
             kubectl apply -f ./deployment/blue-controller.json
 
+
   deploy-green:
     docker:
       - image: cimg/python:3.7.13
