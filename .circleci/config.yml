@@ -103,9 +103,9 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            sudo chmod 777 ./deployment/blue-controller.json
+            #sudo chmod 777 ./deployment/blue-controller.json
             aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
-            kubectl apply -f ./deployment/blue-controller.json
+            sudo kubectl apply -f ./deployment/blue-controller.json
 
   deploy-green:
     docker:
