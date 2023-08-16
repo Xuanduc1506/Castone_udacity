@@ -17,7 +17,8 @@ commands:
       - run:
           name: Install kubectl
           command: |
-            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
+            #curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
+            curl -LO https://dl.k8s.io/release/v1.28.0/bin/linux/arm64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
 
@@ -103,7 +104,6 @@ jobs:
           name: Add kubectl
           command: |
             aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
-            kubectl get all --all-namespaces
             kubectl apply -f ./deployment/blue-controller.json
 
   deploy-green:
