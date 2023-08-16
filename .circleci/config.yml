@@ -17,9 +17,7 @@ commands:
       - run:
           name: Install kubectl
           command: |
-            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/v1.27.4/2023-07-19/bin/linux/amd64/kubectl
-            #curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.27.0/bin/linux/amd64/kubectl
-            #curl -LO https://dl.k8s.io/release/v1.28.0/bin/linux/amd64/kubectl
+            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
 
