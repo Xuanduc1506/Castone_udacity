@@ -90,8 +90,8 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
-            kubectl config use-context arn:aws:eks:us-east-1:998518335649:cluster/cluster-capstone-udacity
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-metadata
+            kubectl config use-context arn:aws:eks:us-east-1:998518335649:cluster/capstone-udacity-metadata
 
   deploy-blue:
     docker:
@@ -104,8 +104,8 @@ jobs:
           name: Add kubectl
           command: |
             #sudo chmod 777 ./deployment/blue-controller.json
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
-            sudo kubectl apply -f ./deployment/blue-controller.json
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-metadata
+            kubectl apply -f ./deployment/blue-controller.json
 
   deploy-green:
     docker:
@@ -118,8 +118,8 @@ jobs:
           name: Add kubectl
           command: |
             sudo chmod 777 ./deployment/green-controller.json
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
-            kubectl apply -f ./deployment/green-controller.json
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-metadata
+            apply -f ./deployment/green-controller.json
 
   create-blue-service:
     docker:
@@ -131,7 +131,7 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-metadata
             kubectl apply -f ./deployment/blue-service.json
 
   user-accept:
@@ -154,7 +154,7 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            aws eks --region us-east-1 update-kubeconfig --name cluster-capstone-udacity
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-metadata
             kubectl apply -f ./deployment/green-service.json
 
 workflows:

@@ -5,6 +5,9 @@ metadata:
   name: capstone-udacity-metadata
   region: us-east-1
 
+iam:
+  withOIDC: true
+
 nodeGroups:
   - name: capstone-udacity-node
     instanceType: t2.micro
