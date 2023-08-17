@@ -119,7 +119,7 @@ jobs:
           command: |
             sudo chmod 777 ./deployment/green-controller.json
             aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-metadata
-            apply -f ./deployment/green-controller.json
+            kubectl apply -f ./deployment/green-controller.json
 
   create-blue-service:
     docker:
