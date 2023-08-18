@@ -18,7 +18,6 @@ commands:
           name: Install kubectl
           command: |
             curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
-            #curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl   
 
@@ -79,8 +78,8 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-cluster
-            kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/capstone-udacity-cluster
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity
+            kubectl config use-context arn:aws:eks:us-east-1:877965158150:cluster/capstone-udacity
 
   deploy-blue:
     docker:
@@ -93,7 +92,7 @@ jobs:
           name: Add kubectl
           command: |
             #sudo chmod 777 ./deployment/blue-controller.json
-            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-cluster
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity
             kubectl apply -f ./deployment/blue-controller.json
 
   deploy-green:
@@ -107,7 +106,7 @@ jobs:
           name: Add kubectl
           command: |
             sudo chmod 777 ./deployment/green-controller.json
-            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-cluster
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity
             kubectl apply -f ./deployment/green-controller.json
 
   create-blue-service:
@@ -120,7 +119,7 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-cluster
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity
             kubectl apply -f ./deployment/blue-service.json
 
   user-accept:
@@ -143,8 +142,25 @@ jobs:
       - run:
           name: Add kubectl
           command: |
-            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity-cluster
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity
             kubectl apply -f ./deployment/green-service.json
+
+  green-application:
+    docker:
+      - image: cimg/python:3.7.13
+    steps:
+      - checkout
+      - install-awscli
+      - install-kubectl
+      - run:
+          name: Get pod
+          command: |
+            aws eks --region us-east-1 update-kubeconfig --name capstone-udacity
+            kubectl get nodes,deploy,svc,pod
+      - run:
+          name: Get service
+          command: |
+            kubectl get service -o wide
 
 workflows:
   default:
@@ -164,3 +180,5 @@ workflows:
           requires: [create-blue-service]
       - create-green-service:
           requires: [user-accept]
+      - green-application:
+          requires: [create-green-service]
